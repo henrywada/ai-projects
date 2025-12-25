@@ -4,12 +4,20 @@ import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
-  // 静的サイトとしてビルド（これが最重要）
+  // ★静的サイト設定（これはそのまま維持）
   output: 'static',
 
   vite: {
-    // 型エラー防止のため as any をつけます
+    // Tailwindの設定
     plugins: [tailwindcss() as any],
+    
+    // ★ここを復活：このライブラリをバンドル対象から外します
+    ssr: {
+      external: ["@resvg/resvg-js"],
+    },
+    optimizeDeps: {
+      exclude: ["@resvg/resvg-js"],
+    },
   },
 
   adapter: cloudflare(),
