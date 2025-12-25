@@ -7,7 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   // あなたのCloudflare URL
-  site: 'https://site-01-blog.pages.dev',
+  site: 'https://blog.hr-dx.jp',
 
   // 静的サイトとしてビルド
   output: 'static',
