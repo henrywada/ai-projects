@@ -1,0 +1,27 @@
+/* src/styles/global.css */
+@import "tailwindcss";
+
+@theme {
+  /* Cronitor風のカラーパレット定義（修正版） */
+
+  /* 背景：真っ黒ではなく、ほんの少し青みが入った深いグレー（信頼感） */
+  --color-bg-dark: #1c1e24;      /* Cronitorに近いダークグレー */
+
+  /* カード背景：背景より少し明るい色で階層を作る */
+  --color-bg-card: #262931;
+
+  /* アクセント：蛍光グリーンを少し落ち着かせた「ミントグリーン」に */
+  --color-accent-primary: #34d399; /* Emerald 400 (少し柔らかい緑) */
+  --color-accent-glow: #059669;    /* 光彩は控えめに */
+
+  /* フォント */
+  --font-sans: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Menlo", "Monaco", "Courier New", monospace;
+}
+
+/* 全体の基本設定 */
+html, body {
+  background-color: var(--color-bg-dark);
+  color: #e5e7eb; /* 文字はGray 200（真っ白より目に優しい） */
+  font-family: var(--font-sans);
+}
