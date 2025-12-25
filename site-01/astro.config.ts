@@ -47,7 +47,7 @@ export default defineConfig({
     plugins: [tailwindcss()],
     ssr: {
       // ★ここを追加：サーバー側でビルドする際、このライブラリはバンドルしない
-      external: ["@resvg/resvg-js"],
+      external: ["@resvg/resvg-js", "sharp"],
     },
     optimizeDeps: {
       exclude: ["@resvg/resvg-js"],
@@ -73,5 +73,8 @@ export default defineConfig({
     preserveScriptOrder: true,
   },
 
-  adapter: cloudflare(),
+  adapter: cloudflare({
+  imageService: 'compile',
+}),
+
 });
