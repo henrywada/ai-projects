@@ -1,17 +1,27 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
-  // ★ここが最重要：静的サイトとしてビルドする設定を追加
+  // ★静的サイトとしてビルド
   output: 'static',
 
-  vite: {
-    plugins: [tailwindcss()],
-    // 以前書いた ssr: { external: ... } などはもう不要なので削除しました
+  // ★これを復活させます（Layout.astroのエラー対策）
+  env: {
+    schema: {
+      PUBLIC_GOOGLE_SITE_VERIFICATION: envField.string({
+        context: "client",
+        access: "public",
+        optional: true,
+      }),
+    },
   },
 
-  // アダプター設定もシンプルに戻します
+  vite: {
+    // ★ as any をつけて型チェックを回避します（Tailwindエラー対策）
+    plugins: [tailwindcss() as any],
+  },
+
   adapter: cloudflare(),
 });
