@@ -1,80 +1,17 @@
-import { defineConfig, envField } from "astro/config";
-import tailwindcss from "@tailwindcss/vite";
-import sitemap from "@astrojs/sitemap";
-import remarkToc from "remark-toc";
-import remarkCollapse from "remark-collapse";
-import {
-  transformerNotationDiff,
-  transformerNotationHighlight,
-  transformerNotationWordHighlight,
-} from "@shikijs/transformers";
-import { transformerFileName } from "./src/utils/transformers/fileName";
-import { SITE } from "./src/config";
-
-import cloudflare from "@astrojs/cloudflare";
+import { defineConfig } from 'astro/config';
+import tailwindcss from '@tailwindcss/vite';
+import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
-  site: SITE.website,
-
-  integrations: [
-    sitemap({
-      filter: page => SITE.showArchives || !page.endsWith("/archives"),
-    }),
-  ],
-
-  markdown: {
-    remarkPlugins: [remarkToc, [remarkCollapse, { test: "Table of contents" }]],
-    shikiConfig: {
-      // For more themes, visit https://shiki.style/themes
-      themes: { light: "min-light", dark: "night-owl" },
-      defaultColor: false,
-      wrap: false,
-      transformers: [
-        transformerFileName({ style: "v2", hideDot: false }),
-        transformerNotationHighlight(),
-        transformerNotationWordHighlight(),
-        transformerNotationDiff({ matchAlgorithm: "v3" }),
-      ],
-    },
-  },
+  // ★ここが最重要：静的サイトとしてビルドする設定を追加
+  output: 'static',
 
   vite: {
-    // eslint-disable-next-line
-    // @ts-ignore
-    // This will be fixed in Astro 6 with Vite 7 support
-    // See: https://github.com/withastro/astro/issues/14030
     plugins: [tailwindcss()],
-    ssr: {
-      // ★ここを追加：サーバー側でビルドする際、このライブラリはバンドルしない
-      external: ["@resvg/resvg-js", "sharp"],
-    },
-    optimizeDeps: {
-      exclude: ["@resvg/resvg-js"],
-    },
+    // 以前書いた ssr: { external: ... } などはもう不要なので削除しました
   },
 
-  image: {
-    responsiveStyles: true,
-    layout: "constrained",
-  },
-
-  env: {
-    schema: {
-      PUBLIC_GOOGLE_SITE_VERIFICATION: envField.string({
-        access: "public",
-        context: "client",
-        optional: true,
-      }),
-    },
-  },
-
-  experimental: {
-    preserveScriptOrder: true,
-  },
-
-  adapter: cloudflare({
-  imageService: 'compile',
-}),
-
+  // アダプター設定もシンプルに戻します
+  adapter: cloudflare(),
 });
