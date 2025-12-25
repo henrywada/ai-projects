@@ -1,0 +1,37 @@
+services:
+  # 1. Blog (Astro / pnpm) -> http://localhost:3001
+  blog:
+    build: ./site-01
+    container_name: site-01-blog
+    ports:
+      - "3001:4321"
+    volumes:
+      - ./site-01:/app
+      - /app/node_modules
+    restart: always
+
+  # 2. LP (Astro / yarn) -> http://localhost:3002
+  lp:
+    build: ./site-02
+    container_name: site-02-lp
+    ports:
+      - "3002:4321"
+    volumes:
+      - ./site-02:/app
+      - /app/node_modules
+    restart: always
+
+ # 3. SaaS (Next.js / npm) -> http://localhost:3000
+  saas:
+    build: ./saas
+    container_name: saas-app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./saas:/app
+      - /app/node_modules
+    # ▼▼▼ ここから追加 ▼▼▼
+    env_file:
+      - ./saas/.env.local
+    # ▲▲▲ ここまで追加 ▲▲▲
+    restart: always
