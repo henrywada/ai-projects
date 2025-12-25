@@ -3,15 +3,16 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  // これから作るサイトのURL（予定）
+  // あなたのサイトURL（予定）
   site: 'https://site-02-lp.pages.dev',
 
-  // ★重要：静的サイトとしてビルド
+  // 静的サイトとしてビルド
   output: 'static',
 
   vite: {
-    plugins: [tailwindcss() as any],
+    // ★修正点：JavaScriptファイルなので "as any" は削除します
+    plugins: [tailwindcss()],
   },
 
-  // Cloudflareアダプターは削除して、純粋な静的HTMLとして出力します
+  // Cloudflareアダプターは不要なので削除済み
 });
